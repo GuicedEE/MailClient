@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/GuicedEE/GuicedMailClient/actions/workflows/build.yml/badge.svg)](https://github.com/GuicedEE/GuicedMailClient/actions/workflows/build.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.guicedee/mail-client)](https://central.sonatype.com/artifact/com.guicedee/mail-client)
-[![Maven Snapshot](https://img.shields.io/nexus/s/com.guicedee/mail-client?server=https%3A%2F%2Foss.sonatype.org&label=Maven%20Snapshot)](https://oss.sonatype.org/content/repositories/snapshots/com/guicedee/mail-client/)
+[![Snapshot](https://img.shields.io/badge/Snapshot-2.0.0-SNAPSHOT-orange)](https://github.com/GuicedEE/Packages/packages/maven/com.guicedee.mail-client)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 
 ![Java 25+](https://img.shields.io/badge/Java-25%2B-green)
@@ -118,19 +118,31 @@ That's it. `MailClientPreStartup` discovers the annotations, `MailClientModule` 
 
 ## 📐 Architecture
 
-```
-Startup
-  IGuiceContext.instance()
-   └─ MailClientPreStartup          (IGuicePreStartup — annotation scanning)
-       ├─ Discovers @MailConnectionOptions (classes and package-info.java)
-       └─ Wraps with environment variable resolution
-   └─ MailClientModule              (IGuiceModule — Guice bindings)
-       ├─ Creates shared MailClient per connection (pooled)
-       ├─ Binds MailClient as @Named("connection-name")
-       └─ Binds MailService as @Named("connection-name") singleton
-   └─ MailClientPostStartup         (IGuicePostStartup — initialization logging)
-   └─ MailClientPreDestroy          (IGuicePreDestroy — shutdown)
-       └─ Closes all mail clients
+```mermaid
+flowchart TD
+    n1["Startup"]
+    n2["IGuiceContext.instance()"]
+    n1 --> n2
+    n3["MailClientPreStartup<br/>IGuicePreStartup — annotation scanning"]
+    n2 --> n3
+    n4["Discovers @MailConnectionOptions<br/>classes and package-info.java"]
+    n3 --> n4
+    n5["Wraps with environment variable resolution"]
+    n3 --> n5
+    n6["MailClientModule<br/>IGuiceModule — Guice bindings"]
+    n2 --> n6
+    n7["Creates shared MailClient per connection<br/>pooled"]
+    n6 --> n7
+    n8["Binds MailClient as @Named('connection-name')"]
+    n6 --> n8
+    n9["Binds MailService as @Named('connection-name') singleton"]
+    n6 --> n9
+    n10["MailClientPostStartup<br/>IGuicePostStartup — initialization logging"]
+    n2 --> n10
+    n11["MailClientPreDestroy<br/>IGuicePreDestroy — shutdown"]
+    n2 --> n11
+    n12["Closes all mail clients"]
+    n11 --> n12
 ```
 
 ### Send lifecycle
@@ -293,13 +305,14 @@ private MailClient mailClient;
 
 ## 🗺️ Module Graph
 
-```
-com.guicedee.mailclient
- ├── io.vertx.mail.client          (Vert.x Mail Client)
- ├── com.guicedee.vertx            (Vert.x lifecycle)
- ├── com.guicedee.client           (GuicedEE SPI contracts)
- ├── io.github.classgraph          (annotation scanning)
- └── org.apache.commons.lang3      (StringUtils)
+```mermaid
+flowchart LR
+    com_guicedee_mailclient["com.guicedee.mailclient"]
+    com_guicedee_mailclient --> io_vertx_mail_client["io.vertx.mail.client<br/>Vert.x Mail Client"]
+    com_guicedee_mailclient --> com_guicedee_vertx["com.guicedee.vertx<br/>Vert.x lifecycle"]
+    com_guicedee_mailclient --> com_guicedee_client["com.guicedee.client<br/>GuicedEE SPI contracts"]
+    com_guicedee_mailclient --> io_github_classgraph["io.github.classgraph<br/>annotation scanning"]
+    com_guicedee_mailclient --> org_apache_commons_lang3["org.apache.commons.lang3<br/>StringUtils"]
 ```
 
 ## 🧩 JPMS
