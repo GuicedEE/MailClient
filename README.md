@@ -26,7 +26,7 @@ Built on [Vert.x Mail Client](https://vertx.io/docs/vertx-mail-client/java/) · 
 <summary>Gradle (Kotlin DSL)</summary>
 
 ```kotlin
-implementation("com.guicedee:mail-client:2.0.1")
+implementation("com.guicedee:mail-client:2.0.2-SNAPSHOT")
 ```
 </details>
 
