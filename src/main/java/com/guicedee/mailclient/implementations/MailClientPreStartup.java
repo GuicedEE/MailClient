@@ -94,7 +94,6 @@ public class MailClientPreStartup implements IGuicePreStartup<MailClientPreStart
         }
     }
 
-    @SuppressWarnings("unchecked")
     private MailConnectionOptions wrapConnectionOptions(String connectionName, MailConnectionOptions ann)
     {
         return new MailConnectionOptions()
