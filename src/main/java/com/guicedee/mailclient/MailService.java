@@ -1,6 +1,6 @@
 package com.guicedee.mailclient;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 import io.vertx.core.Future;
 import io.vertx.ext.mail.MailClient;
 import io.vertx.ext.mail.MailMessage;

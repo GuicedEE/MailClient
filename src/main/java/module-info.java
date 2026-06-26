@@ -21,8 +21,8 @@ module com.guicedee.mailclient {
     provides IGuicePreStartup with MailClientPreStartup;
     provides IGuicePreDestroy with MailClientPreDestroy;
 
-    opens com.guicedee.mailclient to com.google.guice, com.fasterxml.jackson.databind;
-    opens com.guicedee.mailclient.implementations to com.fasterxml.jackson.databind, com.google.guice;
+    opens com.guicedee.mailclient to com.google.guice, tools.jackson.databind;
+    opens com.guicedee.mailclient.implementations to tools.jackson.databind, com.google.guice;
 }
 
 
