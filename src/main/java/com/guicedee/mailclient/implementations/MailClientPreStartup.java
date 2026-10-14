@@ -1,5 +1,7 @@
 package com.guicedee.mailclient.implementations;
 
+import com.guicedee.client.utils.ClassLoading;
+
 import com.guicedee.client.IGuiceContext;
 import com.guicedee.client.services.lifecycle.IGuicePreStartup;
 import com.guicedee.mailclient.MailConnectionOptions;
@@ -51,7 +53,7 @@ public class MailClientPreStartup implements IGuicePreStartup<MailClientPreStart
                 .distinct()
                 .forEach(ci -> {
                     log.debug("Found Mail Connection on class - {}", ci.getName());
-                    var ann = ci.loadClass().getAnnotation(MailConnectionOptions.class);
+                    var ann = ClassLoading.loadClass(ci).getAnnotation(MailConnectionOptions.class);
                     String connectionName = ann.value();
                     MailConnectionOptions wrapped = wrapConnectionOptions(connectionName, ann);
                     packageMailConnections.computeIfAbsent(ci.getPackageName(), k -> new ArrayList<>()).add(wrapped);
